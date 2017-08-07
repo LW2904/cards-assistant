@@ -5,7 +5,7 @@ const log = require('winston')
 
 exports.get = (id, key) => {
   return new Promise((resolve, reject) => {
-    if (!id || !key) reject(Error(`no ${id ? 'SteamID' : 'API Key'} provided.`))
+    if (!id || !key) reject(Error(`no ${id ? 'API Key' : 'SteamID'} provided.`))
 
     request(`${URL}?key=${key}&steamid=${id}&format=json`, (err, res, body) => {
       log.debug(`steam API GET: ${res.statusCode}`)
@@ -21,7 +21,7 @@ exports.get = (id, key) => {
 
 exports.appIDs = (badges) => {
   let ids = []
-  for (let badge in badges) {
+  for (let badge of badges) {
     if (badge.appid) ids.push(badge.appid)
   }
   return ids

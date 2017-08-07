@@ -1,22 +1,32 @@
 const log = require('winston')
 
-const SteamCommunity = require('steamcommunity')
-let community = new SteamCommunity()
+let community = new (require('steamcommunity'))()
 
 exports.get = (id) => {
   return new Promise((resolve, reject) => {
-    id = new (SteamCommunity.SteamID)(id)
-
-    community.getSteamUser(id, (err, user) => {
-      if (err) reject(err.message)
-      log.debug(`got profile of ${id}/${user.name}.`)
-
-      // Steam = 753, Community contextID = 6, tradeable only
-      user.getInventoryContents(753, 6, true, (err, inv, c, total) => {
+    community.getUserInventoryContents(
+      id, 753, 6, true, (err, inv, c, total) => {
         if (err) reject(err.message)
-        log.debug(`got ${total} items from ${id}/${user.name}'s inventory.`)
-        resolve(inv[100])
-      })
-    })
+        log.debug(`got ${total} items from ${id}'s inventory.`)
+        resolve(inv)
+      }
+    )
   })
+}
+
+exports.parse = (inv, blacklist = []) => {
+  let cards = {}
+  let count = 0
+  for (let item of inv) {
+    if (item.type.indexOf('Trading Card') !== -1) {
+      let appid = item.market_fee_app
+      if (!blacklist.includes(appid) && item.market_name.indexOf('Foil') === -1) {
+        count++
+        if (!cards[appid]) cards[appid] = [ item.market_name ]
+        else cards[appid].push(item.market_name)
+      }
+    }
+  }
+  log.debug(`parsed inventory, ${count}/${inv.length} valid cards found.`)
+  return cards
 }
