@@ -28,6 +28,7 @@ const log = require('./components/logger')
 
 let partner = {}
 let owner = {}
+let sets
 
 Promise.all([
 	badges.get(PARTNER, CONFIG.apikey),
@@ -43,6 +44,24 @@ Promise.all([
 
 	partner.ids = badges.appIDs(badg)
 	owner.inv = inventory.parse(inv, partner.ids)
+	sets = setData.sets
+
+	return
 }).catch(err => {
 	log.error(`something went wrong while parsing: ${err}`)
+}).then(() => {
+	log.info(`finished parsing, doing magic`)
+
+	for (let setData of sets) {
+		if (owner.inv[setData.appid]) {
+			let unique = [...new Set(owner.inv[setData.appid])]
+			if (unique.length === setData.normal.count) {
+				// We have at least one set for the game (setData.appid)
+				log.info(`owner has at least one uncrafted set for game ${setData.appid} that partner does not have`)
+			}
+		}
+	}
+
+}).catch(err => {
+	log.error(`something went wrong while working the magic: ${err}`)
 })
