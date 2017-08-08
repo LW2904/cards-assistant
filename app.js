@@ -57,7 +57,7 @@ Promise.all([
 			let unique = [...new Set(owner.inv[setData.appid])]
 			if (unique.length === setData.normal.count) {
 				// We have at least one set for the game (setData.appid)
-				log.info(`owner has at least one uncrafted set for game ${setData.appid} that partner does not have`)
+				log.info(`owner has at least one uncrafted set for game ${setData.game}/${setData.appid} that partner does not have`)
 			}
 		}
 	}
