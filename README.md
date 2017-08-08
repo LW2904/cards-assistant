@@ -45,3 +45,34 @@ Your own, personal `APIkey` can be obtained [here](https://steamcommunity.com/de
 
 I realize that the instructions might be somewhat unclear to those inexperienced with programming, 
 feel free to message me on [steam](http://steamcommunity.com/profiles/76561198091491690) if you have questions. 
+
+## How it works
+
+If you take a look at the app.js file, you will notice a rather lengthy comment block where I took notes on the 
+things that need to be done in the application.
+
+It looks close to this:
+
+#### Make all web requests
+
+1. Get badges of partner from the SteamAPI
+2. Get inventory of owner from the SteamCommunity module which communicates with the SteamAPI
+3. Get a huge JSON file with steam trading card set information from steam.tools.
+
+*I have no idea how steam.tools got this file (and how they update it) but it's a godsend, and it took me quite a while to find.*
+   
+#### Parse the information
+
+- We only need to know which games the partner has badges for, discard the other information.
+- We only need trading cards from the owner inventory, discard all other items (+ foil cards).
+- Remove all trading cards that are for games the owner already has a badge for.
+
+#### Get sets from owner inventory
+
+Ok so this is a bit of a challenge, and I solved it very sloppily.
+In order to code something like a tradebot for cards, this would need to be revised, but for our 
+purposes it works
+
+1. Get all unique cards of every game.
+2. If the number of unique cards per game equals the number of cards needed for the badge (we got this number from steam.tools) 
+then we have found an __uncrafted, full__ set that the partner __doesn't have__. 
