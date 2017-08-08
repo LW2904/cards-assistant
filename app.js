@@ -20,6 +20,7 @@ const CONFIG = require('../CA-config')
 
 const OWNER =  CONFIG.owner || require('readline-sync').question('Owner: ')
 const PARTNER =  CONFIG.partner || require('readline-sync').question('Partner: ')
+const APIKEY = CONFIG.apikey || require('readline-sync').question('Steam API key: ')
 
 const badges = require('./components/badges')
 const data = require('./components/data')
@@ -31,7 +32,7 @@ let owner = {}
 let sets
 
 Promise.all([
-	badges.get(PARTNER, CONFIG.apikey),
+	badges.get(PARTNER, APIKEY),
 	inventory.get(OWNER),
 	data()
 ]).catch(err => {
