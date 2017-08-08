@@ -1,6 +1,6 @@
 # cards-assistant
 
-This is an beta version of a steam trading card trading assistant. Wow, that's a mouthful.
+This is a beta version of a steam trading card trading assistant. Wow, that's a mouthful.
 
 ![](http://i.imgur.com/aDIlZ3b.png)
 
