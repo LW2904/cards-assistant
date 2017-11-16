@@ -59,7 +59,7 @@ It looks close to this:
 2. Get inventory of owner from the SteamCommunity module which communicates with the SteamAPI
 3. Get a huge JSON file with steam trading card set information from steam.tools.
 
-*I have no idea how steam.tools got this file (and how they update it) but it's a godsend, and it took me quite a while to find.*
+*The steam.tools data is used with explicit permission.*
    
 #### Parse the information
 
